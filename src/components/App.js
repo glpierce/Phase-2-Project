@@ -1,8 +1,12 @@
 import logo from '../logo.svg';
 import './App.css';
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
+import Weather from  "./Weather.js"
+import PageHeader from "./PageHeader.js"
 
 function App() {
+
+  const [weatherData, setWeatherData] = useState({})
 
   useEffect(() => { 
     getPlanets()
@@ -27,16 +31,23 @@ function App() {
   function getWeatherStation(latLong) {
     fetch(`https://api.weather.gov/points/${latLong}`)
     .then(resp => resp.json())
-    .then(data => getStationForecast(data.properties.forecastGridData))
+    .then(data => {
+      getStationForecast(data.properties.forecastGridData)
+    })
   }
 
   function getStationForecast(url) {
     fetch(url)
     .then(resp => resp.json())
-    .then(data => console.log(data))
+    .then(data => setWeatherData(data.properties))
   }
 
-  return (<div/>);
+  return (
+    <>
+      <PageHeader />
+      <Weather weatherData={weatherData}/>
+    </>
+  );
 }
 
 export default App;
