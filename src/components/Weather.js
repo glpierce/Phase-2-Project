@@ -20,6 +20,27 @@ function Weather({ weatherData }) {
     )
 }
 
+    // const testDate = weatherData.apparentTemperature?.values[12].validTime.split("/")[0];
+    // const d = new Date(testDate)
+    // console.log(d);
+    const d2 = new Date() /* Malleable */
+    console.log("d2 is ",d2);
+    
+    // d < d2 ? console.log("false") : console.log("true")
+    
+    // const d3 = Date() /* Only spits out current time, does not evaluate correctly */
+    // console.log("d3 is ",d3)
+
+    const testArr = []
+    weatherData.apparentTemperature?.values.map(value => testArr.push(value))
+
+    // console.log(testArr.forEach(obj => console.log(new Date(obj.validTime.split("/")[0]))));
+
+    console.log(testArr.filter(obj => new Date(obj.validTime.split("/")[0]) < d2 ? false : true))
+
+    // console.log(Date(testArr[0].validTime.split("/")[0]))
+
+
 // Default behaviors
 // SearchBar Persistent on top of screen
 // LocationCards get appended into Weather with (conditional render)
