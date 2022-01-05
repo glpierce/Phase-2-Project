@@ -1,12 +1,10 @@
 import Card from "./Card";
 
-function LocationCards() {
+function LocationCards({ weatherData, degToCardinal, toggleDetail }) {
     return(
         <div>
             {/* map cards based on db.json (user catalog) here */}
-            <Card />
-            <Card />
-            <Card />
+            <Card weatherData={weatherData} degToCardinal={degToCardinal} toggleDetail={toggleDetail} />
         </div>
     )
 }

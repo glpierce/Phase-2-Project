@@ -5,41 +5,30 @@ import { useState } from "react"
 
 function Weather({ weatherData }) {
     const [detailViewer, setDetailViewer] = useState(false);
-    const { apparentTemperature, snowLevel } = weatherData
-    // console.log( apparentTemperature.values )
-    //console.log(weatherData.apparentTemperature)
-    //console.log(weatherData.apparentTemperature?.values[0])
-    //console.log(parseDate(weatherData.apparentTemperature?.values[0].validTime))
+    
+    function degToCardinal(dir) {
+        const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      
+        dir += 22.5;
+      
+        dir < 0 ? dir = 360 - Math.abs(dir) % 360 : dir = dir % 360;
+      
+        let wind = parseInt(dir / 45);
+        return `${directions[wind]}`;
+    }
+
+    function toggleDetail(){
+        console.log("STOP POKING MEEEEE!")
+    }
 
     return(
         <div>
             {/* {apparentTemperature.values.map(value => <p>{value.validTime, value.value}</p>)} */}
             <SearchBar />
-            {detailViewer ? <LocationDetail /> : <LocationCards />}
+            {detailViewer ? <LocationDetail weatherData={weatherData} degToCardinal={degToCardinal} toggleDetail={toggleDetail} /> : <LocationCards weatherData={weatherData} degToCardinal={degToCardinal} toggleDetail={toggleDetail} />}
         </div>
     )
 }
-
-    // const testDate = weatherData.apparentTemperature?.values[12].validTime.split("/")[0];
-    // const d = new Date(testDate)
-    // console.log(d);
-    const d2 = new Date() /* Malleable */
-    console.log("d2 is ",d2);
-    
-    // d < d2 ? console.log("false") : console.log("true")
-    
-    // const d3 = Date() /* Only spits out current time, does not evaluate correctly */
-    // console.log("d3 is ",d3)
-
-    const testArr = []
-    weatherData.apparentTemperature?.values.map(value => testArr.push(value))
-
-    // console.log(testArr.forEach(obj => console.log(new Date(obj.validTime.split("/")[0]))));
-
-    console.log(testArr.filter(obj => new Date(obj.validTime.split("/")[0]) < d2 ? false : true))
-
-    // console.log(Date(testArr[0].validTime.split("/")[0]))
-
 
 // Default behaviors
 // SearchBar Persistent on top of screen

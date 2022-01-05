@@ -59,8 +59,11 @@ function App() {
         }
         middleMan2[key] = workingObj
       })
-      console.log(middleMan2)
+      console.log("fetching... ",middleMan2)
       setWeatherData(middleMan2)
+      console.log("state set to... ",weatherData)
+      // setWeatherData(data.properties)
+      // console.log(weatherData)
     })
   }
 
@@ -69,12 +72,11 @@ function App() {
     valuesArray.forEach(valueObj => {
       const rawDate = valueObj.validTime
       const referenceWindow = parseDate(rawDate)
-      const dateArray = referenceWindow[0]
-      const windowEnd = new Date(Date.UTC(dateArray[0], dateArray[1], dateArray[2], (dateArray[3] + referenceWindow[1]), dateArray[4], dateArray[5]))
+      const windowEnd = new Date(referenceWindow[0].toString())
+      windowEnd.setHours(windowEnd.getHours()+referenceWindow[1])
       const currentDateTime = new Date()
       if (currentDateTime <= windowEnd) {
-        const convertedDate = new Date(Date.UTC(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5]))
-        filteredValuesArray.push({...valueObj, validTime: convertedDate})
+        filteredValuesArray.push({...valueObj, validTime: referenceWindow[0]})
       }
     })
     return filteredValuesArray
@@ -84,21 +86,35 @@ function App() {
     if (!dateTimeString) {
         return false
     }
-    const dateArray = []
-    const workingArray1 = dateTimeString.split("/")
-    const workingArray2 = workingArray1[0].split("T")
-    workingArray2[0].split("-").map(dateComponent => dateArray.push(dateComponent))
-    workingArray2[1].slice(0, workingArray2[1].indexOf("+")).split(":").map(timeComponent => dateArray.push(timeComponent))
+    const dateArr = dateTimeString.split("/")
+    const cleanDate = new Date(dateArr[0])
     let windowDuration 
-    if (workingArray1[1].includes("T")) {
-      const step1 = workingArray1[1].split("PT")
-      windowDuration = step1[0].split("H")
+    if (dateArr[1].includes("T")) {
+      const step1 = dateArr[1].split("T")
+      windowDuration = parseInt(step1[1].split("H")[0])
     } else {
-      const step1 = workingArray1[1].split("P")
-      windowDuration = parseInt(step1[0].split("D")) * 24
+      const step1 = dateArr[1].split("P")
+      windowDuration = parseInt(step1[0].split("D")[0],10) * 24
     }
-    return [dateArray, windowDuration]
+    return [cleanDate, windowDuration]
   }
+
+
+
+    // const d2 = new Date() /* Malleable */
+    
+    // const testArr = []
+    // weatherData.apparentTemperature?.values.map(value => testArr.push(value))
+
+    // console.log(testArr)
+    
+    // console.log(testArr.filter(obj =>
+    //     new Date(obj.validTime.split("/")[0])< d2 ? false : true))
+
+    // console.log(d2.getHours())
+
+
+
 
   return (
     <>
