@@ -7,16 +7,9 @@ function Weather({ weatherData }) {
     const [detailViewer, setDetailViewer] = useState(false);
     const { apparentTemperature, snowLevel } = weatherData
     // console.log( apparentTemperature.values )
-
-    function parseDate (date) {
-        const dateArray = []
-        const workingArray = date.split("T")
-        workingArray[0].split("-").map(dateComponent => dateArray.push(dateComponent))
-        workingArray[1].slice(0, workingArray[1].indexOf("+")).split(":").map(timeComponent => dateArray.push(timeComponent))
-        return new Date(Date.UTC(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5]))
-      }
-    
-      weatherData.apparentTemperature.values.forEach(value => (parseDate(value.validTime)))
+    //console.log(weatherData.apparentTemperature)
+    //console.log(weatherData.apparentTemperature?.values[0])
+    //console.log(parseDate(weatherData.apparentTemperature?.values[0].validTime))
 
     return(
         <div>
