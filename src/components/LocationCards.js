@@ -1,11 +1,14 @@
-import react from "react"
-import LocationCard from "./LocationCard.js"
+import Card from "./Card";
 
-function LocationCards({weatherData}) {
+function LocationCards() {
     return(
-        <>
-        </>
+        <div>
+            {/* map cards based on db.json (user catalog) here */}
+            <Card />
+            <Card />
+            <Card />
+        </div>
     )
 }
 
-export default LocationCards
+export default LocationCards;
