@@ -1,0 +1,22 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Grant",
+            "prefs": {
+                "darkMode":[],
+                "uom":[],
+                "savedLocations":[]
+            }
+        },
+        {
+            "id": 2,
+            "name": "1NJ57C3",
+            "prefs": {
+                "darkMode":[],
+                "uom":[],
+                "savedLocations":[]
+            }
+        }
+    ]
+}

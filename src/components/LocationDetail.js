@@ -1,15 +1,14 @@
 
 
-function LocationDetail() {
+function LocationDetail({ weatherData, weatherData: { temperature, relativeHumidity, windDirection, windSpeed, probabilityOfPrecipitation : precipitation, degToCardinal, toggleDetail }}) {
     return(
-        <div>
+        <div onClick={toggleDetail}>
             {/* leftpanel */}
             <p>This is the LocationDetail placeholder...</p>
             <h2>Location</h2>
-            <p>Current Temp:</p>
-            <p>Humidity:</p>
-            <p>Wind:</p>
-            <p>Precipitation:</p>
+            <li>Wind: {(windSpeed?.values[0].value).toFixed(1)} {/* MPH/KPH ternary here */} {degToCardinal(windDirection?.values[0].value)}</li>
+            <li>Precipitation: {precipitation?.values[0].value}%</li>
+            <li>Relative Humidity: {relativeHumidity?.values[0].value}%</li>
             {/* rightpanel */}
             {/* Forecasts, etc */}
         </div>
