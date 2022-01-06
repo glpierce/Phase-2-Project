@@ -1,7 +1,7 @@
 import DailyForecast from './DailyForecast.js'
 import { Link } from "react-router-dom";
 
-function LocationDetail({ gridData, forecastData, degToCardinal }) {
+function LocationDetail({ coordinates, gridData, forecastData, saveLocation, degToCardinal }) {
     const { temperature, 
             apparentTemperature, 
             maxTemperature, 
@@ -12,11 +12,15 @@ function LocationDetail({ gridData, forecastData, degToCardinal }) {
             probabilityOfPrecipitation : precipitation, 
             skyCover} = gridData
 
+    function handleSave() {
+        const locationData = {coordinates: coordinates, grid: gridData, forecast: forecastData}
+        saveLocation(coordinates, locationData)
+        //Toggle star/heart
+    }
 
     function createForecast() {
         const dailyForecasts = forecastData.filter(forecast => forecast.isDaytime === true && (!forecast.name.includes("This") && !forecast.name.includes("Today")))
         const forecastElement =  dailyForecasts.map(forecast => <DailyForecast key={forecast.number} forecast={forecast}/>)
-        console.log(forecastElement)
         return forecastElement
     }
 
@@ -24,7 +28,10 @@ function LocationDetail({ gridData, forecastData, degToCardinal }) {
         <div>
             <div>
                 <h2>Location</h2>
-                <button>Save Button</button>
+                <button onClick={handleSave} >Save Button</button>
+                <Link to={"/weather/saved"}>
+                    <button>To Saved</button>
+                </Link>
             </div>
             {/* leftpanel */}
             <div>
