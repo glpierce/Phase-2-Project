@@ -1,15 +1,21 @@
 import logo from '../logo.svg';
 import './App.css';
 import {useEffect, useState} from "react"
-import Weather from  "./Weather.js"
 import PageHeader from "./PageHeader.js"
+import Home from "./Home.js"
+import Weather from  "./Weather.js"
+import Planets from "./Planets.js"
+import {Route, Switch} from 'react-router-dom'
 
 function App() {
 
-  const [weatherData, setWeatherData] = useState({})
+  //const [weatherData, setWeatherData] = useState({})
+
+  const[{gridData, gridStatus, forecastData, forecastStatus}, setWeatherData] = useState({gridData: null, gridStatus: "idle", forecastData: null, forecastStatus: "idle"})
 
   useEffect(() => { 
-    getPlanets()
+    setWeatherData(state => ({...state, gridStatus: "pending", forecastStatus: "pending"}))
+    //getPlanets()
     getWeather()
   },[])
 
@@ -31,12 +37,13 @@ function App() {
   function getWeatherStation(latLong) {
     fetch(`https://api.weather.gov/points/${latLong}`)
     .then(resp => resp.json())
-    .then(data => {
-      getStationForecast(data.properties.forecastGridData)
+    .then(respData => {
+      getGridData(respData.properties.forecastGridData)
+      getForecastData(respData.properties.forecast)
     })
   }
 
-  function getStationForecast(url) {
+  function getGridData(url) {
     fetch(url)
     .then(resp => resp.json())
     .then(data => {
@@ -59,9 +66,9 @@ function App() {
         }
         middleMan2[key] = workingObj
       })
-      console.log("fetching... ",middleMan2)
-      setWeatherData(middleMan2)
-      console.log("state set to... ",weatherData)
+      console.log("gridData fetched... ", middleMan2)
+      setWeatherData(state => ({...state, gridData: middleMan2, gridStatus: "fulfilled"}))
+      //console.log("state set to... ", weatherData)
       // setWeatherData(data.properties)
       // console.log(weatherData)
     })
@@ -99,27 +106,29 @@ function App() {
     return [cleanDate, windowDuration]
   }
 
-
-
-    // const d2 = new Date() /* Malleable */
-    
-    // const testArr = []
-    // weatherData.apparentTemperature?.values.map(value => testArr.push(value))
-
-    // console.log(testArr)
-    
-    // console.log(testArr.filter(obj =>
-    //     new Date(obj.validTime.split("/")[0])< d2 ? false : true))
-
-    // console.log(d2.getHours())
-
-
-
+    function getForecastData(url) {
+      fetch(url)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log("forecastData fetched... ", data.properties.periods)
+        setWeatherData(state => ({...state, forecastData: data.properties.periods, forecastStatus: "fulfilled"}))
+      })
+    }
 
   return (
     <>
       <PageHeader />
-      <Weather weatherData={weatherData}/>
+      <Switch>
+        <Route path="/weather">
+          {(gridStatus === "fulfilled" && forecastStatus === "fulfilled") ? <Weather gridData={gridData} forecastData={forecastData}/> : <p>Loading...</p>}
+        </Route>
+        <Route path="/planets">
+          <Planets/>
+        </Route>
+        <Route path="/">
+          <Home/>
+        </Route>
+      </Switch>
     </>
   );
 }
