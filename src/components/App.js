@@ -47,21 +47,13 @@ function App() {
     .then(data => {
       let middleMan1 = {}
       Object.keys(data.properties).forEach(key => {
-        if (typeof data.properties[key] === "object") {
-          middleMan1[key] = data.properties[key]
-        }
+        typeof data.properties[key] === "object" && (middleMan1[key] = data.properties[key])
       })
       let middleMan2 = {}
       Object.keys(middleMan1).forEach(key => {
         const workingObj = {}
-        if (middleMan1[key].uom) {
-          workingObj.uom = middleMan1[key].uom.split(":")[1]
-        }
-        if (middleMan1[key].values) {
-          workingObj.values = convertDateTimes(middleMan1[key].values)
-        } else {
-          workingObj.value = middleMan1[key].value
-        }
+        middleMan1[key].uom && (workingObj.uom = middleMan1[key].uom.split(":")[1]);
+        (middleMan1[key].values) ? workingObj.values = convertDateTimes(middleMan1[key].values) : (workingObj.value = middleMan1[key].value);
         middleMan2[key] = workingObj
       })
       console.log("gridData fetched... ", middleMan2)

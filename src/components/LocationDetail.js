@@ -1,4 +1,5 @@
 import DailyForecast from './DailyForecast.js'
+import { Link } from "react-router-dom";
 
 function LocationDetail({ gridData, forecastData, degToCardinal }) {
     const { temperature, 
