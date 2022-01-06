@@ -1,7 +1,7 @@
 import DailyForecast from './DailyForecast.js'
 import { Link } from "react-router-dom";
 
-function LocationDetail({ coordinates, gridData, forecastData, saveLocation, degToCardinal }) {
+function LocationDetail({ coordinates, gridData, forecastData, saveLocation, degToCardinal, getAddress }) {
     const { temperature, 
             apparentTemperature, 
             maxTemperature, 
@@ -27,7 +27,8 @@ function LocationDetail({ coordinates, gridData, forecastData, saveLocation, deg
     return(
         <div>
             <div>
-                <h2>Location</h2>
+                <h2>Address Placeholder</h2>
+                {/* <h2>{getAddress(coordinates)}</h2> */}
                 <button onClick={handleSave} >Save Button</button>
                 <Link to={"/weather/saved"}>
                     <button>To Saved</button>
