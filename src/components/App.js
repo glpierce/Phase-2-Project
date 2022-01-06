@@ -9,8 +9,6 @@ import {Route, Switch} from 'react-router-dom'
 
 function App() {
 
-  //const [weatherData, setWeatherData] = useState({})
-
   const[{gridData, gridStatus, forecastData, forecastStatus}, setWeatherData] = useState({gridData: null, gridStatus: "idle", forecastData: null, forecastStatus: "idle"})
 
   useEffect(() => { 
