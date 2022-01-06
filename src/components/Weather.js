@@ -2,7 +2,7 @@ import SearchBar from "./SearchBar"
 import LocationCards from "./LocationCards"
 import LocationDetail from "./LocationDetail"
 import { useState, useEffect, useRef } from "react"
-import {Route, Switch} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 function Weather({ gridData, forecastData }) {
 

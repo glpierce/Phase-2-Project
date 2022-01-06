@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 function SearchBar({newSearch}) {
     const [addressInput, setAddressInput] = useState("")
@@ -6,6 +6,7 @@ function SearchBar({newSearch}) {
     function handleSearch() {
         newSearch(addressInput)
         setAddressInput("")
+        {/* fetch function call to pull detail */}
     }
 
     return(
