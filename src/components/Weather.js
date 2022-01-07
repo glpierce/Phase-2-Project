@@ -25,8 +25,8 @@ function Weather({ user }) {
     useEffect(() => {
         if (cardStatus === "fulfilled") {
             setCardsData(state => ({...state, cardsData: [...cardsData, cardData]}))
-        } else {
-            getSavedLocationsDB(user)
+        // } else {
+            // getSavedLocationsDB(user)
         }
     }, [user, cardStatus])
 
@@ -88,19 +88,42 @@ function Weather({ user }) {
         })
     }
 
-  
+    function postUserSubmit(locationDataObj) {
+    const postObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(locationDataObj)
+    }
+    fetch(`http://localhost:8000/weatherData/`, postObj)
+    /* http://localhost:8000/weatherData/:id? */
+}
+    
     function saveLocation(coordinates, locationData) {
         //push to server
         console.log(locationData)
         setCardsData(state => ({...state, cardsData: [...cardsData, locationData], cardsStatus: "fulfilled"}))
-        console.log(locationData, cardsData)
+        console.log("saveLocation... ", locationData, cardsData)
+        // postSavedLocationDataDB(cardsData)
+        localGetTest()
     }
 
+    function localGetTest(){
+        fetch(`http://localhost:8000/users/2`)
+        .then(r => r.json())
+        .then(data => console.log("local savedLocations pull..." , data.savedLocations))
+    }
 
     function getAddress(coordinates) {
         fetch(`https://geocode.xyz/?locate=${coordinates}&json=1`)
         .then(resp => resp.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data)
+            /* data needs to be returned -- create a state? */
+            return ("getAddress: ",data.city, ", ", data.state)
+            /* not functional -- tinkering logic, switched console.log to return */
+        })
     }
 
     function convertDateTimes(valuesArray) {
@@ -150,10 +173,12 @@ function Weather({ user }) {
             <SearchBar setSearchCoordinates={setSearchCoordinates} />
             <Switch>
                 <Route path= "/weather/saved">
-                    {cardsStatus === "fulfilled" ? <LocationCards cardsData={cardsData} setSearchCoordinates={setSearchCoordinates} gridData={gridData} degToCardinal={degToCardinal} /> : <p>Loading...</p>}
+                    {cardsStatus === "fulfilled" ? <LocationCards cardsData={cardsData} setSearchCoordinates={setSearchCoordinates} gridData={gridData} degToCardinal={degToCardinal} setDetailData={setDetailData} /> : <p>Loading...</p>}
                 </Route>
                 <Route path= "/weather/detail">
-                    {gridStatus === "fulfilled" && forecastStatus === "fulfilled" ? <LocationDetail coordinates={coordinates} gridData={gridData} forecastData={forecastData} saveLocation={saveLocation} degToCardinal={degToCardinal} /> : <p>Loading...</p>}
+                    {gridStatus === "fulfilled" && forecastStatus === "fulfilled" ? <LocationDetail coordinates={coordinates} gridData={gridData} forecastData={forecastData} saveLocation={saveLocation} degToCardinal={degToCardinal} getAddress={getAddress} /> : <p>Loading...</p>}
+                    {/* {<LocationDetail coordinates={coordinates} gridData={gridData} forecastData={forecastData} saveLocation={saveLocation} degToCardinal={degToCardinal} getAddress={getAddress} />} */}
+                    {/* passed down getAddress for testing */}
                 </Route>
             </Switch>
         </div>
